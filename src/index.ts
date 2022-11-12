@@ -1,3 +1,7 @@
+import { getAssetFromKV } from '@cloudflare/kv-asset-handler'
+import manifestJSON from '__STATIC_CONTENT_MANIFEST'
+const assetManifest = JSON.parse(manifestJSON)
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -25,6 +29,23 @@ export default {
 		env: Env,
 		ctx: ExecutionContext
 	): Promise<Response> {
+		const url = new URL(request.url)
+		if (url.pathname === "/") {
+			console.log(url.pathname)
+			return await getAssetFromKV(
+				{
+				  request,
+				  waitUntil(promise) {
+					return ctx.waitUntil(promise)
+				  },
+				},
+				{
+				  ASSET_NAMESPACE: env.__STATIC_CONTENT,
+				  ASSET_MANIFEST: assetManifest,
+				},
+			  )
+		}
+
 		return new Response("Hello World!");
 	},
 };
