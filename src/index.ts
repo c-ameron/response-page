@@ -1,26 +1,7 @@
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler'
-import manifestJSON from '__STATIC_CONTENT_MANIFEST'
-const assetManifest = JSON.parse(manifestJSON)
 
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `wrangler dev src/index.ts` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `wrangler publish src/index.ts --name my-worker` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { StatusCode, STATUS_CODES } from './lib/classes';
 
 export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
 }
 
 export default {
@@ -29,23 +10,68 @@ export default {
 		env: Env,
 		ctx: ExecutionContext
 	): Promise<Response> {
-		const url = new URL(request.url)
-		if (url.pathname === "/") {
-			console.log(url.pathname)
-			return await getAssetFromKV(
-				{
-				  request,
-				  waitUntil(promise) {
-					return ctx.waitUntil(promise)
-				  },
-				},
-				{
-				  ASSET_NAMESPACE: env.__STATIC_CONTENT,
-				  ASSET_MANIFEST: assetManifest,
-				},
-			  )
-		}
 
-		return new Response("Hello World!");
+		const url = new URL(request.url)
+		if ( !isValidStatusCode(url.pathname) ) {
+			return new Response(html, {
+				headers: {
+				  'content-type': 'text/html;charset=UTF-8',
+				},
+			  });
+		}
+		let statusCode = getStatusCode(url.pathname)
+
+
+		console.log(getFormat(url))
+		console.log(getStatusText(url))
+		let status = new StatusCode(statusCode,getStatusText(url))
+		//console.log(status.getJson())
+		//return new Response(null,{status: 101})
+		console.log(getSleep(url))
+		await sleep(getSleep(url))
+
+		return new Response(status.getHtml());
 	},
 };
+
+function isValidStatusCode(status: string) {
+	return /^\/([2-5][0-9][0-9])$/.test(status)
+}
+
+function getStatusCode(path: string): number {
+	return parseInt(path.slice(1))
+}
+
+function getFormat(url: URL): string {
+	let format =  url.searchParams.get("format")
+	if ( format !== "html" && format !== "json" ){
+		format = "html"
+	}
+	return format
+}
+
+function getStatusText(url: URL): string | null {
+	let statusText =  url.searchParams.get("statustext")
+	if ( statusText ){
+		statusText = statusText.slice(0,1024)
+	}
+	return statusText
+}
+
+function getSleep(url: URL): number {
+	let sleepParameter =  url.searchParams.get("sleep")
+	console.log(!Number.isNaN(sleepParameter))
+	let sleepDelay = 0
+	if ( sleepParameter && !Number.isNaN(sleepParameter)){
+		sleepDelay = parseInt(sleepParameter)
+	}
+	return sleepDelay
+}
+
+
+async function sleep(milliseconds: number) {
+    await new Promise(r => setTimeout(r, milliseconds,[]));
+}
+
+const html = `<!DOCTYPE html>
+<h1> Response page</h1>`
