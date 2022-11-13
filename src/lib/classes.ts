@@ -77,10 +77,28 @@ export class StatusCode {
 
     function createHeaders(request: Request): Headers {
         const headers = new Headers()
-        const statusCode = parseStatusCode(new URL(request.url).pathname)
-        const location = getLocation(request)
-        if ( statusCode >= 300 && statusCode <= 399 && location) {
-            headers.set('location', location)
+        const url = new URL(request.url)
+        const statusCode = parseStatusCode(url.pathname)
+
+        if ( statusCode >= 300 && statusCode <= 399) {
+            const location = getLocation(request)
+            if (location) {
+                headers.set('Location', location)
+            } else {
+                if (getFormat(request) === 'json') {
+                    headers.set('Location', `${url.protocol}//${url.host}/200?format=json`)
+                } else {
+                    headers.set('Location', `${url.protocol}//${url.host}/200`)
+                }
+            }
+        }
+
+        for ( const pair of request.headers.entries()) {
+            const RESPONSE_PREFIX='x-response-'
+            if ( pair[0].includes(RESPONSE_PREFIX)) {
+                let responseHeader = pair[0].replace(RESPONSE_PREFIX,'')
+                headers.set(responseHeader,pair[1])
+            }
         }
         return headers
     }
