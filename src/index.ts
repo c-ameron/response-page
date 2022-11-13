@@ -19,58 +19,28 @@ export default {
 				},
 			  });
 		}
-		let statusCode = getStatusCode(url.pathname)
+		const statusCode = new StatusCode(request)
+		await statusCode.sleep()
+		return statusCode.response()
 
 
-		console.log(getFormat(url))
-		console.log(getStatusText(url))
-		let status = new StatusCode(statusCode,getStatusText(url))
+		//console.log(getFormat(request))
+		//console.log(getStatusText(url))
+		//let status = new StatusCode(statusCode,getStatusText(url))
 		//console.log(status.getJson())
 		//return new Response(null,{status: 101})
-		console.log(getSleep(url))
-		await sleep(getSleep(url))
+		//console.log(getSleep(url))
+		//const sleepDelay = getSleep(url)
+		//if (sleepDelay > 0 ) {
+		//	await sleep(sleepDelay)
+		//}
 
-		return new Response(status.getHtml());
+		//return new Response(status.getHtml());
 	},
 };
 
 function isValidStatusCode(status: string) {
 	return /^\/([2-5][0-9][0-9])$/.test(status)
-}
-
-function getStatusCode(path: string): number {
-	return parseInt(path.slice(1))
-}
-
-function getFormat(url: URL): string {
-	let format =  url.searchParams.get("format")
-	if ( format !== "html" && format !== "json" ){
-		format = "html"
-	}
-	return format
-}
-
-function getStatusText(url: URL): string | null {
-	let statusText =  url.searchParams.get("statustext")
-	if ( statusText ){
-		statusText = statusText.slice(0,1024)
-	}
-	return statusText
-}
-
-function getSleep(url: URL): number {
-	let sleepParameter =  url.searchParams.get("sleep")
-	console.log(!Number.isNaN(sleepParameter))
-	let sleepDelay = 0
-	if ( sleepParameter && !Number.isNaN(sleepParameter)){
-		sleepDelay = parseInt(sleepParameter)
-	}
-	return sleepDelay
-}
-
-
-async function sleep(milliseconds: number) {
-    await new Promise(r => setTimeout(r, milliseconds,[]));
 }
 
 const html = `<!DOCTYPE html>

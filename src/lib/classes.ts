@@ -1,29 +1,119 @@
 export class StatusCode {
     statusCode: number
     statusText: string
+    format: string
+    sleepDelay: number
+    headers: Headers
 
-    constructor(statusCode: number, statusText: string|null) {
-        this.statusCode = statusCode
+    constructor(request: Request) {
+
+        const url = new URL(request.url)
+        this.statusCode = parseStatusCode(url.pathname)
+        this.statusText = parseStatusText(url)
+        this.format = getFormat(request)
+        this.sleepDelay = getSleep(url)
+        this.headers = createHeaders(request)
     
-        if (statusText) {
-            this.statusText = statusText!
-        } else if (STATUS_CODES.has(statusCode)) {
-            this.statusText = STATUS_CODES.get(statusCode)!
-        } else {
-            this.statusText = ""
-        }
+
     }
 
-    getJson() {
+    #getJson() {
         console.log(`${this.statusCode}: ${this.statusText}`)
         return JSON.stringify({status: this.statusCode, statusText: this.statusText})
     }
 
-    getHtml() {
+    #getHtml() {
         console.log(`${this.statusCode}: ${this.statusText}`)
         return `${this.statusCode}: ${this.statusText}`
     }
+
+    async sleep() {
+        if ( this.sleepDelay > 0 ) {
+            await new Promise(r => setTimeout(r, this.sleepDelay,[]));
+        }
+    }
+
+    response(): Response {
+        const body = this.format === 'html' ? this.#getHtml() : this.#getJson()
+        const options = {
+            status: this.statusCode,
+            statusText: this.statusText,
+            headers: this.headers
+        };
+        return new Response(body,options)
+    }
 }
+
+
+    function parseStatusCode(path: string): number {
+        return parseInt(path.slice(1))
+    }
+
+    function parseStatusText(url: URL): string {
+        const statusTextParam = getStatusText(url)
+        const statusCode = parseStatusCode(url.pathname)
+        let statusText
+        if (statusTextParam) {
+            statusText = statusTextParam
+        } else if (STATUS_CODES.has(statusCode)) {
+            statusText = STATUS_CODES.get(statusCode)!
+        } else {
+            statusText = ""
+        }
+        return statusText
+    }
+    
+    function getFormat(request: Request): string {
+        const acceptHeader = request.headers.get('Accept')
+        console.log(acceptHeader)
+        const url = new URL(request.url)
+        const acceptHeaderJson = ( acceptHeader && acceptHeader?.includes('application/json'))
+        const formatParameter =  url.searchParams.get("format")
+        if ( acceptHeaderJson || formatParameter === 'json' ){
+            return 'json'
+        }
+        return 'html'
+    }
+
+    function createHeaders(request: Request): Headers {
+        const headers = new Headers()
+        const statusCode = parseStatusCode(new URL(request.url).pathname)
+        const location = getLocation(request)
+        if ( statusCode >= 300 && statusCode <= 399 && location) {
+            headers.set('location', location)
+        }
+        return headers
+    }
+    
+    function getStatusText(url: URL): string | null {
+        let statusText =  url.searchParams.get("statustext")
+        if ( statusText ){
+            statusText = statusText.slice(0,1024)
+        }
+        return statusText
+    }
+    
+    function getSleep(url: URL): number {
+        let sleepParameter =  url.searchParams.get("sleep")
+        let sleepDelay = 0
+        if ( sleepParameter && !Number.isNaN(sleepParameter)){
+            sleepDelay = parseInt(sleepParameter)
+            if ( sleepDelay < 0 ) {
+                sleepDelay = 0
+            } // I could also set a hard limit here but I'm curious how long it will go in cloudflare
+        }
+        console.log(sleepDelay)
+        return sleepDelay
+    }
+    
+    function getLocation(request: Request): string | null {
+        return request.headers.get('Location')
+    }
+    
+    
+    function sleep(milliseconds: number) {
+        return new Promise(r => setTimeout(r, milliseconds,[]));
+    }
 
 export const STATUS_CODES = new Map<number, string>([
 	[200, "OK"],
