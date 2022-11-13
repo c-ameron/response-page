@@ -1,5 +1,5 @@
 
-import { StatusCode, STATUS_CODES } from './lib/classes';
+import { StatusCode } from './lib/classes';
 
 export interface Env {
 }
@@ -23,19 +23,6 @@ export default {
 		await statusCode.sleep()
 		return statusCode.response()
 
-
-		//console.log(getFormat(request))
-		//console.log(getStatusText(url))
-		//let status = new StatusCode(statusCode,getStatusText(url))
-		//console.log(status.getJson())
-		//return new Response(null,{status: 101})
-		//console.log(getSleep(url))
-		//const sleepDelay = getSleep(url)
-		//if (sleepDelay > 0 ) {
-		//	await sleep(sleepDelay)
-		//}
-
-		//return new Response(status.getHtml());
 	},
 };
 

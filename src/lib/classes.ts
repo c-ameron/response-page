@@ -77,6 +77,12 @@ export class StatusCode {
 
     function createHeaders(request: Request): Headers {
         const headers = new Headers()
+        setLocationHeader(headers,request)
+        setResponseHeaders(headers,request)
+        return headers
+    }
+
+    function setLocationHeader(headers: Headers, request: Request) {
         const url = new URL(request.url)
         const statusCode = parseStatusCode(url.pathname)
 
@@ -93,6 +99,9 @@ export class StatusCode {
             }
         }
 
+    }
+
+    function setResponseHeaders(headers: Headers, request: Request) {
         for ( const pair of request.headers.entries()) {
             const RESPONSE_PREFIX='x-response-'
             if ( pair[0].includes(RESPONSE_PREFIX)) {
@@ -100,7 +109,6 @@ export class StatusCode {
                 headers.set(responseHeader,pair[1])
             }
         }
-        return headers
     }
     
     function getStatusText(url: URL): string | null {
