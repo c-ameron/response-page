@@ -1,6 +1,6 @@
 
 import { StatusCode } from './lib/classes';
-
+import { INDEX_HTML } from './lib/html';
 export interface Env {
 }
 
@@ -13,7 +13,7 @@ export default {
 
 		const url = new URL(request.url)
 		if ( !isValidStatusCode(url.pathname) ) {
-			return new Response(html, {
+			return new Response(INDEX_HTML, {
 				headers: {
 				  'content-type': 'text/html;charset=UTF-8',
 				},
@@ -30,5 +30,3 @@ function isValidStatusCode(status: string) {
 	return /^\/([2-5][0-9][0-9])$/.test(status)
 }
 
-const html = `<!DOCTYPE html>
-<h1> Response page</h1>`

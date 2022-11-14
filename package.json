@@ -17,8 +17,8 @@
     "start": "wrangler dev",
     "deploy": "wrangler publish",
     "build": "wrangler publish --dry-run --outdir=dist",
-    "test": "npm run build && NODE_OPTIONS=--experimental-vm-modules npx ava --verbose test/*.spec.ts",
-    "ava": "NODE_OPTIONS=--experimental-vm-modules npx ava  test/*.spec.ts --timeout=10s",
+    "test": "npm run build && NODE_OPTIONS=--experimental-vm-modules npx ava --verbose test/*.spec.ts --timeout=20s",
+    "ava": "NODE_OPTIONS=--experimental-vm-modules npx ava  test/*.spec.ts --timeout=20s",
     "lint": "npx eslint ."
   },
   "type": "module",

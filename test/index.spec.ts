@@ -1,6 +1,6 @@
 import test from "ava";
 import { Miniflare } from "miniflare";
-import { STATUS_CODES } from "../src/lib/classes.js" ;
+import { STATUS_CODES } from "../src/lib/codes.js" ;
 
 const MINIFLARE_HOST = 'http://localhost:8787'
 
