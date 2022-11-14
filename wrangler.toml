@@ -1,3 +1,9 @@
 name = "response-page"
 main = "src/index.ts"
 compatibility_date = "2022-11-12"
+
+[env.production]
+workers_dev = false
+routes = [
+	{ pattern = "response.page", custom_domain = true, zone_name = "response.page" }
+]
