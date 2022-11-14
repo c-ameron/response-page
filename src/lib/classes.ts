@@ -18,12 +18,10 @@ export class StatusCode {
     }
 
     #getJson() {
-        console.log(`${this.statusCode}: ${this.statusText}`)
         return JSON.stringify({status: this.statusCode, statusText: this.statusText})
     }
 
     #getHtml() {
-        console.log(`${this.statusCode}: ${this.statusText}`)
         return `${this.statusCode}: ${this.statusText}`
     }
 
@@ -65,7 +63,6 @@ export class StatusCode {
     
     function getFormat(request: Request): string {
         const acceptHeader = request.headers.get('Accept')
-        console.log(acceptHeader)
         const url = new URL(request.url)
         const acceptHeaderJson = ( acceptHeader && acceptHeader?.includes('application/json'))
         const formatParameter =  url.searchParams.get("format")
@@ -128,7 +125,6 @@ export class StatusCode {
                 sleepDelay = 0
             } // I could also set a hard limit here but I'm curious how long it will go in cloudflare
         }
-        console.log(sleepDelay)
         return sleepDelay
     }
     
@@ -179,6 +175,8 @@ export const STATUS_CODES = new Map<number, string>([
 	[416, "Range Not Satisfiable"],
 	[417, "Expectation Failed"],
 	[418, "I'm a teapot"],
+    [419, "Page Expired"],
+    [420, "Enhance Your Calm"],
 	[421, "Misdirected Request"],
 	[422, "Unprocessable Entity"],
 	[423, "Locked"],
@@ -187,8 +185,20 @@ export const STATUS_CODES = new Map<number, string>([
 	[426, "Upgrade Required"],
 	[428, "Precondition Required"],
 	[429, "Too Many Requests"],
+    [430, "Request Header Fields Too Large"],
 	[431, "Request Header Fields Too Large"],
+    [440, "Login Time-out"],
+    [444, "No Response"],
+    [450, "Blocked by Windows Parental Controls"],
 	[451, "Unavailable For Legal Reasons"],
+    [460, ""],
+    [463, ""],
+    [494, "Request header too large"],
+    [495, "SSL Certificate Error"],
+    [496, "SSL Certificate Required"],
+    [497, "HTTP Request Sent to HTTPS Port"],
+    [498, "Invalid Token"],
+    [499, "Client Closed Request"],
 	[500, "Internal Server Error"],
 	[501, "Not Implemented"],
 	[502, "Bad Gateway"],
@@ -198,6 +208,18 @@ export const STATUS_CODES = new Map<number, string>([
 	[506, "Variant Also Negotiates"],
 	[507, "Insufficient Storage"],
 	[508, "Loop Detected"],
+    [509, "Bandwidth Limit Exceeded "],
 	[510, "Not Extended"],
-	[511, "Network Authentication Required"]
+	[511, "Network Authentication Required"],
+    [520, "Web Server Returned an Unknown Error"],
+    [521, "Web Server Is Down"],
+    [522, "Connection Timed Out"],
+    [523, "Origin Is Unreachable"],
+    [524, "A Timeout Occurred"],
+    [525, "SSL Handshake Failed"],
+    [526, "Invalid SSL Certificate"],
+    [527, "Railgun Error"],
+    [530, ""],
+    [598, "Network read timeout error"],
+    [599, "Network Connect Timeout Error"]
 ])
