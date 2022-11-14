@@ -79,6 +79,7 @@ export class StatusCode {
   #createHeaders(request: Request): Headers {
     const headers = new Headers();
     this.#setLocationHeader(headers, request);
+    this.#setContentHeader(headers)
     this.#setResponseHeaders(headers, request);
     return headers;
   }
@@ -101,6 +102,11 @@ export class StatusCode {
         }
       }
     }
+  }
+
+  #setContentHeader(headers: Headers) {
+    const contentType = this.format === "html" ? 'text/plain' : 'application/json';
+    headers.set('Content-Type',contentType)
   }
 
   #setResponseHeaders(headers: Headers, request: Request) {

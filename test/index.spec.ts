@@ -54,6 +54,7 @@ test(`return 200 with custom statustext for html`, async (t) => {
   t.is(await res.status, 200);
   t.is(await res.statusText, "look at me!");
   t.is(await res.text(), "200: look at me!");
+  t.is(res.headers.get("Content-Type"), 'text/plain');
 });
 
 test(`return custom status for html`, async (t) => {
@@ -65,6 +66,7 @@ test(`return custom status for html`, async (t) => {
   t.is(await res.status, 555);
   t.is(await res.statusText, "");
   t.is(await res.text(), "555: ");
+  t.is(res.headers.get("Content-Type"), 'text/plain');
 });
 
 test(`return custom status and status text for html`, async (t) => {
@@ -77,6 +79,7 @@ test(`return custom status and status text for html`, async (t) => {
   t.is(await res.status, 444);
   t.is(await res.statusText, "a custom text");
   t.is(await res.text(), "444: a custom text");
+  t.is(res.headers.get("Content-Type"), 'text/plain');
 });
 
 test(`return 200 with custom statustext for json query param`, async (t) => {
@@ -93,6 +96,7 @@ test(`return 200 with custom statustext for json query param`, async (t) => {
     await res.text(),
     JSON.stringify({ status: 200, statusText: "look at me!" })
   );
+  t.is(res.headers.get("Content-Type"), 'application/json');
 });
 
 test(`return custom status for json query param`, async (t) => {
@@ -105,6 +109,7 @@ test(`return custom status for json query param`, async (t) => {
   t.is(await res.status, 566);
   t.is(await res.statusText, "");
   t.is(await res.text(), JSON.stringify({ status: 566, statusText: "" }));
+  t.is(res.headers.get("Content-Type"), 'application/json');
 });
 
 test(`return custom status and status text for json query param`, async (t) => {
@@ -121,6 +126,7 @@ test(`return custom status and status text for json query param`, async (t) => {
     await res.text(),
     JSON.stringify({ status: 444, statusText: "a json custom text" })
   );
+  t.is(res.headers.get("Content-Type"), 'application/json');
 });
 
 test(`return 200 with json for accept: application/json header`, async (t) => {
@@ -133,6 +139,7 @@ test(`return 200 with json for accept: application/json header`, async (t) => {
   t.is(await res.status, 200);
   t.is(await res.statusText, "OK");
   t.is(await res.text(), JSON.stringify({ status: 200, statusText: "OK" }));
+  t.is(res.headers.get("Content-Type"), 'application/json');
 });
 
 test(`302 returns default location`, async (t) => {
