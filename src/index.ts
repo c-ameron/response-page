@@ -6,7 +6,9 @@ export interface Env {}
 export default {
   async fetch(
     request: Request,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     env: Env,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ctx: ExecutionContext
   ): Promise<Response> {
     const url = new URL(request.url);

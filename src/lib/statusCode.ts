@@ -51,7 +51,7 @@ export class StatusCode {
     if (statusTextParam) {
       return statusTextParam;
     } else if (STATUS_CODES.has(this.statusCode)) {
-      return STATUS_CODES.get(this.statusCode)!;
+      return STATUS_CODES.get(this.statusCode) ?? "";
     } else {
       return "";
     }
