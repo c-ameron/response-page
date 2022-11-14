@@ -1,4 +1,9 @@
 {
+  "name": "response-page",
+  "author": "c-ameron",
+  "homepage": "https://github.com/c-ameron/response-page",
+  "version": "0.1.0",
+  "type": "module",
   "dependencies": {
     "wrangler": "^2.2.1"
   },
@@ -25,8 +30,6 @@
     "prettier": "npx prettier --write .",
     "prettier-check": "npx prettier --check ."
   },
-  "type": "module",
-  "version": "0.1.0",
   "ava": {
     "extensions": {
       "ts": "module"
