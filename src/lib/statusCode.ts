@@ -43,7 +43,7 @@ export class StatusCode {
   }
 
   #parseStatusCode(path: string): number {
-    return parseInt(path.slice(1));
+    return parseInt(path.replace("/status/",""));
   }
 
   #parseStatusText(url: URL): string {
@@ -95,10 +95,10 @@ export class StatusCode {
         if (this.format === "json") {
           headers.set(
             "Location",
-            `${url.protocol}//${url.host}/200?format=json`
+            `${url.protocol}//${url.host}/status/200?format=json`
           );
         } else {
-          headers.set("Location", `${url.protocol}//${url.host}/200`);
+          headers.set("Location", `${url.protocol}//${url.host}/status/200`);
         }
       }
     }

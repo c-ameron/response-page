@@ -31,7 +31,7 @@ STATUS_CODES.forEach((statusText, statusCode) => {
     const { mf } = t.context;
 
     try {
-      const res = await mf.dispatchFetch(`${MINIFLARE_HOST}/${statusCode}`);
+      const res = await mf.dispatchFetch(`${MINIFLARE_HOST}/status/${statusCode}`);
       t.is(await res.status, statusCode);
       t.is(await res.statusText, statusText);
     } catch (e) {
@@ -48,7 +48,7 @@ test(`return 200 with custom statustext for html`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   url.searchParams.append("statustext", "look at me!");
   const res = await mf.dispatchFetch(url);
   t.is(await res.status, 200);
@@ -61,7 +61,7 @@ test(`return custom status for html`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/555`);
+  const url = new URL(`${MINIFLARE_HOST}/status/555`);
   const res = await mf.dispatchFetch(url);
   t.is(await res.status, 555);
   t.is(await res.statusText, "");
@@ -73,7 +73,7 @@ test(`return custom status and status text for html`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/444`);
+  const url = new URL(`${MINIFLARE_HOST}/status/444`);
   url.searchParams.append("statustext", "a custom text");
   const res = await mf.dispatchFetch(url);
   t.is(await res.status, 444);
@@ -86,7 +86,7 @@ test(`return 200 with custom statustext for json query param`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   url.searchParams.append("statustext", "look at me!");
   url.searchParams.append("format", "json");
   const res = await mf.dispatchFetch(url);
@@ -103,7 +103,7 @@ test(`return custom status for json query param`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/566`);
+  const url = new URL(`${MINIFLARE_HOST}/status/566`);
   url.searchParams.append("format", "json");
   const res = await mf.dispatchFetch(url);
   t.is(await res.status, 566);
@@ -116,7 +116,7 @@ test(`return custom status and status text for json query param`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/444`);
+  const url = new URL(`${MINIFLARE_HOST}/status/444`);
   url.searchParams.append("statustext", "a json custom text");
   url.searchParams.append("format", "json");
   const res = await mf.dispatchFetch(url);
@@ -133,7 +133,7 @@ test(`return 200 with json for accept: application/json header`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   const headers = new Headers({ Accept: `application/json` });
   const res = await mf.dispatchFetch(url, { headers: headers });
   t.is(await res.status, 200);
@@ -146,26 +146,26 @@ test(`302 returns default location`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/302`);
+  const url = new URL(`${MINIFLARE_HOST}/status/302`);
   const res = await mf.dispatchFetch(url);
-  t.is(res.headers.get("Location"), `${MINIFLARE_HOST}/200`);
+  t.is(res.headers.get("Location"), `${MINIFLARE_HOST}/status/200`);
 });
 
 test(`302 with json returns default location with json`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/302`);
+  const url = new URL(`${MINIFLARE_HOST}/status/302`);
   const headers = new Headers({ Accept: `application/json` });
   const res = await mf.dispatchFetch(url, { headers: headers });
-  t.is(res.headers.get("Location"), `${MINIFLARE_HOST}/200?format=json`);
+  t.is(res.headers.get("Location"), `${MINIFLARE_HOST}/status/200?format=json`);
 });
 
 test(`302 redirect with custom location`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/302`);
+  const url = new URL(`${MINIFLARE_HOST}/status/302`);
   const headers = new Headers({ Location: `https://response.page` });
   const res = await mf.dispatchFetch(url, { headers: headers });
   t.is(res.headers.get("Location"), "https://response.page");
@@ -175,7 +175,7 @@ test(`non 3xx ignores custom location`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   const headers = new Headers({ Location: `https://response.page` });
   const res = await mf.dispatchFetch(url, { headers: headers });
   t.false(res.headers.has("Location"));
@@ -185,7 +185,7 @@ test(`Returns custom x-response- headers`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/501`);
+  const url = new URL(`${MINIFLARE_HOST}/status/501`);
   const headers = new Headers({
     "X-Response-X-Custom-Header": "custom value",
     "x-response-foo": "bar",
@@ -201,7 +201,7 @@ test(`Response with sleep will sleep for 5 seconds`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   url.searchParams.append("sleep", "5000");
   const start = Date.now();
   const res = await mf.dispatchFetch(url);
@@ -214,7 +214,7 @@ test(`Response with negative sleep will ignore`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   url.searchParams.append("sleep", "-1000");
   const start = Date.now();
   const res = await mf.dispatchFetch(url);
@@ -227,7 +227,7 @@ test(`Response with non integer sleep value will ignore`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/200`);
+  const url = new URL(`${MINIFLARE_HOST}/status/200`);
   url.searchParams.append("sleep", "abcd");
   const start = Date.now();
   const res = await mf.dispatchFetch(url);
@@ -256,11 +256,22 @@ test(`Request to random path will return index`, async (t) => {
   t.regex(await res.text(), /<h1> Response page<\/h1>/);
 });
 
+test(`Request to /status will return index`, async (t) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { mf } = t.context;
+  const url = new URL(`${MINIFLARE_HOST}/status`);
+  const res = await mf.dispatchFetch(url);
+  //t.regex(await res.text(),/^\<\!DOCTYPE html\>/)
+  t.regex(await res.text(), /<h1> Response page<\/h1>/);
+});
+
+
 test(`Request to 1xx will return index`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/100`);
+  const url = new URL(`${MINIFLARE_HOST}/status/100`);
   const res = await mf.dispatchFetch(url);
   //t.regex(await res.text(),/^\<\!DOCTYPE html\>/)
   t.regex(await res.text(), /<h1> Response page<\/h1>/);
@@ -270,7 +281,7 @@ test(`Request to 6xx will return index`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
-  const url = new URL(`${MINIFLARE_HOST}/600`);
+  const url = new URL(`${MINIFLARE_HOST}/status/600`);
   const res = await mf.dispatchFetch(url);
   //t.regex(await res.text(),/^\<\!DOCTYPE html\>/)
   t.regex(await res.text(), /<h1> Response page<\/h1>/);
@@ -284,7 +295,7 @@ test(`Request to 6xx will return index`, async (t) => {
       // @ts-ignore
       const { mf } = t.context;
       // Dispatch a fetch event to our worker
-      const res = await mf.dispatchFetch(`${MINIFLARE_HOST}/${i}`);
+      const res = await mf.dispatchFetch(`${MINIFLARE_HOST}/status/${i}`);
       // Check the count is "1" as this is the first time we've been to this path
       t.is(await res.status, i);
     });

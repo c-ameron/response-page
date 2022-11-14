@@ -12,7 +12,7 @@ export default {
     ctx: ExecutionContext
   ): Promise<Response> {
     const url = new URL(request.url);
-    if (!isValidStatusCode(url.pathname)) {
+    if (!isValidStatusPath(url.pathname)) {
       return new Response(INDEX_HTML, {
         headers: {
           "content-type": "text/html;charset=UTF-8",
@@ -25,6 +25,6 @@ export default {
   },
 };
 
-function isValidStatusCode(status: string) {
-  return /^\/([2-5][0-9][0-9])$/.test(status);
+function isValidStatusPath(status: string) {
+  return /^\/status\/([2-5][0-9][0-9])$/.test(status);
 }
