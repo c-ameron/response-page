@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "./codes";
+import { STATUS_CODES, NULL_BODY_STATUS_CODES } from "./codes";
 export class StatusCode {
   statusCode: number;
   statusText: string;
@@ -22,13 +22,25 @@ export class StatusCode {
   }
 
   response(): Response {
-    const body = this.format === "html" ? this.#getHtml() : this.#getJson();
+    const body = this.#createBody();
     const options = {
       status: this.statusCode,
       statusText: this.statusText,
       headers: this.headers,
     };
     return new Response(body, options);
+  }
+
+  #createBody() {
+    if (!NULL_BODY_STATUS_CODES.includes(this.statusCode)) {
+      if (this.format === "html") {
+        return this.#getHtml();
+      } else {
+        return this.#getJson();
+      }
+    } else {
+      return undefined;
+    }
   }
 
   #getJson() {
@@ -43,7 +55,7 @@ export class StatusCode {
   }
 
   #parseStatusCode(path: string): number {
-    return parseInt(path.replace("/status/",""));
+    return parseInt(path.replace("/status/", ""));
   }
 
   #parseStatusText(url: URL): string {
@@ -79,7 +91,7 @@ export class StatusCode {
   #createHeaders(request: Request): Headers {
     const headers = new Headers();
     this.#setLocationHeader(headers, request);
-    this.#setContentHeader(headers)
+    this.#setContentHeader(headers);
     this.#setResponseHeaders(headers, request);
     return headers;
   }
@@ -105,8 +117,9 @@ export class StatusCode {
   }
 
   #setContentHeader(headers: Headers) {
-    const contentType = this.format === "html" ? 'text/plain' : 'application/json';
-    headers.set('Content-Type',contentType)
+    const contentType =
+      this.format === "html" ? "text/plain" : "application/json";
+    headers.set("Content-Type", contentType);
   }
 
   #setResponseHeaders(headers: Headers, request: Request) {

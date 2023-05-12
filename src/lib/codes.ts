@@ -84,3 +84,6 @@ export const STATUS_CODES = new Map<number, string>([
   [598, "Network read timeout error"],
   [599, "Network Connect Timeout Error"],
 ]);
+
+// Due to the underlying fetch API, we can't serve these statuses with a null body https://fetch.spec.whatwg.org/#statuses
+export const NULL_BODY_STATUS_CODES = [204, 205, 304];
