@@ -1,0 +1,735 @@
+%%
+% Copyright (c) 2017 - 2022, Pascal Wagler;
+% Copyright (c) 2014 - 2022, John MacFarlane
+%
+% All rights reserved.
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions
+% are met:
+%
+% - Redistributions of source code must retain the above copyright
+% notice, this list of conditions and the following disclaimer.
+%
+% - Redistributions in binary form must reproduce the above copyright
+% notice, this list of conditions and the following disclaimer in the
+% documentation and/or other materials provided with the distribution.
+%
+% - Neither the name of John MacFarlane nor the names of other
+% contributors may be used to endorse or promote products derived
+% from this software without specific prior written permission.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+% COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+% POSSIBILITY OF SUCH DAMAGE.
+%%
+
+%%
+% This is the Eisvogel pandoc LaTeX template.
+%
+% For usage information and examples visit the official GitHub page:
+% https://github.com/Wandmalfarbe/pandoc-latex-template
+%%
+
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names,table}{xcolor}
+%
+\documentclass[
+  paper=a4,
+  ,captions=tableheading
+]{scrartcl}
+\usepackage{amsmath,amssymb}
+% Use setspace anyway because we change the default line spacing.
+% The spacing is changed early to affect the titlepage and the TOC.
+\usepackage{setspace}
+\setstretch{1.2}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\definecolor{default-linkcolor}{HTML}{A50000}
+\definecolor{default-filecolor}{HTML}{A50000}
+\definecolor{default-citecolor}{HTML}{4077C0}
+\definecolor{default-urlcolor}{HTML}{4077C0}
+\usepackage[margin=2.5cm,includehead=true,includefoot=true,centering,]{geometry}
+% add backlinks to footnote references, cf. https://tex.stackexchange.com/questions/302266/make-footnote-clickable-both-ways
+\usepackage{footnotebackref}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  breaklinks=true,
+  pdfcreator={LaTeX via pandoc with the Eisvogel template}}
+\author{}
+\date{}
+
+
+
+%%
+%% added
+%%
+
+
+%
+% for the background color of the title page
+%
+
+%
+% break urls
+%
+\PassOptionsToPackage{hyphens}{url}
+
+%
+% When using babel or polyglossia with biblatex, loading csquotes is recommended
+% to ensure that quoted texts are typeset according to the rules of your main language.
+%
+\usepackage{csquotes}
+
+%
+% captions
+%
+\definecolor{caption-color}{HTML}{777777}
+\usepackage[font={stretch=1.2}, textfont={color=caption-color}, position=top, skip=4mm, labelfont=bf, singlelinecheck=false, justification=raggedright]{caption}
+\setcapindent{0em}
+
+%
+% blockquote
+%
+\definecolor{blockquote-border}{RGB}{221,221,221}
+\definecolor{blockquote-text}{RGB}{119,119,119}
+\usepackage{mdframed}
+\newmdenv[rightline=false,bottomline=false,topline=false,linewidth=3pt,linecolor=blockquote-border,skipabove=\parskip]{customblockquote}
+\renewenvironment{quote}{\begin{customblockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
+\item\relax\color{blockquote-text}\ignorespaces}{\unskip\unskip\endlist\end{customblockquote}}
+
+%
+% Source Sans Pro as the de­fault font fam­ily
+% Source Code Pro for monospace text
+%
+% 'default' option sets the default
+% font family to Source Sans Pro, not \sfdefault.
+%
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+    \usepackage[default]{sourcesanspro}
+  \usepackage{sourcecodepro}
+  \else % if not pdftex
+    \usepackage[default]{sourcesanspro}
+  \usepackage{sourcecodepro}
+
+  % XeLaTeX specific adjustments for straight quotes: https://tex.stackexchange.com/a/354887
+  % This issue is already fixed (see https://github.com/silkeh/latex-sourcecodepro/pull/5) but the
+  % fix is still unreleased.
+  % TODO: Remove this workaround when the new version of sourcecodepro is released on CTAN.
+  \ifxetex
+    \makeatletter
+    \defaultfontfeatures[\ttfamily]
+      { Numbers   = \sourcecodepro@figurestyle,
+        Scale     = \SourceCodePro@scale,
+        Extension = .otf }
+    \setmonofont
+      [ UprightFont    = *-\sourcecodepro@regstyle,
+        ItalicFont     = *-\sourcecodepro@regstyle It,
+        BoldFont       = *-\sourcecodepro@boldstyle,
+        BoldItalicFont = *-\sourcecodepro@boldstyle It ]
+      {SourceCodePro}
+    \makeatother
+  \fi
+  \fi
+
+%
+% heading color
+%
+\definecolor{heading-color}{RGB}{40,40,40}
+\addtokomafont{section}{\color{heading-color}}
+% When using the classes report, scrreprt, book,
+% scrbook or memoir, uncomment the following line.
+%\addtokomafont{chapter}{\color{heading-color}}
+
+%
+% variables for title, author and date
+%
+\usepackage{titling}
+\title{}
+\author{}
+\date{}
+
+%
+% tables
+%
+
+%
+% remove paragraph indention
+%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
+%
+%
+% Listings
+%
+%
+
+
+%
+% header and footer
+%
+\usepackage[headsepline,footsepline]{scrlayer-scrpage}
+
+\newpairofpagestyles{eisvogel-header-footer}{
+  \clearpairofpagestyles
+  \ihead*{}
+  \chead*{}
+  \ohead*{}
+  \ifoot*{}
+  \cfoot*{}
+  \ofoot*{\thepage}
+  \addtokomafont{pageheadfoot}{\upshape}
+}
+\pagestyle{eisvogel-header-footer}
+
+
+
+%%
+%% end added
+%%
+
+\begin{document}
+
+%%
+%% begin titlepage
+%%
+
+%%
+%% end titlepage
+%%
+
+
+
+<h1 id="response.page">response.page</h1>
+<p><a href="https://response.page">response.page</a> is an easy to use
+service that returns HTTP response status codes, running on Cloudflare
+workers.</p>
+<ul>
+<li>You can request any HTTP status codes between 200-599 (see response
+codes)</li>
+<li>Have a custom status text</li>
+<li>Receive the response as either text or JSON</li>
+<li>Custom headers in the response</li>
+<li>Custom redirect</li>
+<li>Sleep delay</li>
+<li>Responds to <code>GET</code>, <code>HEAD</code>, <code>POST</code>,
+<code>PUT</code>, <code>PATCH</code>, <code>DELETE</code> and
+<code>OPTIONS</code> methods</li>
+</ul>
+<h1 id="how-to-use">How to use</h1>
+<p>Request to <code>https://response.page/status/&lt;status&gt;</code>
+and get the HTTP status as a response.</p>
+<h2 id="json-response">JSON Response</h2>
+<p>To receive JSON as a response, either include the
+<code>Accept: application/json</code> header, or the
+<code>format=json</code> query parameter</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://response.page/status/200<span class="pp">?</span>format=json</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">{</span><span class="st">&quot;status&quot;</span><span class="dt">:200</span><span class="op">,</span><span class="st">&quot;statusText&quot;</span><span class="dt">:</span><span class="st">&quot;OK&quot;</span><span class="dt">}</span></span></code></pre></div>
+<h2 id="custom-status-text">Custom Status Text</h2>
+<p>By default, it will use the official (and some unofficial) status
+codes and text in the table above. If you would like to override this,
+use the <code>statustext</code> query parameter.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl <span class="at">-G</span> <span class="at">--data-urlencode</span> <span class="st">&quot;statustext=custom status text!&quot;</span> https://response.page/status/200</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">200:</span> custom status text!</span></code></pre></div>
+<h2 id="custom-response-code">Custom Response Code</h2>
+<p>You can request any status code between 200 - 599. Simply change the
+path in <code>/status/&lt;number&gt;</code>. By default you will get an
+empty status text, so feel free to combine it with the custom
+<code>statustext</code> option as well.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl <span class="at">-G</span> <span class="at">--data-urlencode</span> <span class="st">&quot;statustext=custom error&quot;</span> https://response.page/status/543</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">543:</span> custom error</span></code></pre></div>
+<h2 id="custom-response-headers">Custom Response Headers</h2>
+<p>Any headers with the prefix <code>x-response-</code> will be returned
+in the response.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl <span class="at">-H</span> <span class="st">&#39;x-response-custom-header: foo&#39;</span> <span class="at">-H</span> <span class="st">&#39;x-response-another-custom-header: bar&#39;</span> https://response.page/status/200 <span class="at">-v</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> GET <span class="ex">/status/200</span> HTTP/2</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> Host: <span class="ex">response.page</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> user-agent: <span class="ex">curl/7.86.0</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> accept: <span class="ex">*/*</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> x-response-custom-header: <span class="ex">foo</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> x-response-another-custom-header: <span class="ex">bar</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> HTTP/2 <span class="ex">200</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> date: <span class="ex">Fri,</span> 18 Nov 2022 19:02:24 GMT</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> content-type: <span class="ex">text/plain</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> content-length: <span class="ex">7</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> another-custom-header: <span class="ex">bar</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> custom-header: <span class="ex">foo</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">200:</span> OK</span></code></pre></div>
+<h2 id="sleep-delay">Sleep delay</h2>
+<p>You can have the response be delayed by using the <code>sleep</code>
+query parameter, with the sleep time in ms. There is no enforced upper
+limit (yet), however Cloudflare suggest the <a
+href="https://developers.cloudflare.com/workers/platform/limits/#how-long-can-a-subrequest-take">limit
+is around 30s</a></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> time curl https://response.page/status/200<span class="pp">?</span>sleep=5000</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">200:</span> OK</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">real</span>    0m5.143s</span></code></pre></div>
+<h2 id="custom-redirect">Custom Redirect</h2>
+<p>For any 3xx status requested, by default it will return to
+<code>https://response.page/status/200</code>. However, if you’d like to
+change this, add the <code>location:</code> header in your request.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-H</span> <span class="st">&#39;location: https://cameron.ci&#39;</span> https://response.page/status/302 <span class="at">-v</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> GET <span class="ex">/status/302</span> HTTP/2</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> Host: <span class="ex">response.page</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> user-agent: <span class="ex">curl/7.86.0</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> accept: <span class="ex">*/*</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> location: <span class="ex">https://cameron.ci</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> location: <span class="ex">https://cameron.ci</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">302:</span> Found</span></code></pre></div>
+<h1 id="response-codes">Response Codes</h1>
+<p>By default, this service returns all official HTTP status codes
+between 200 and 599, and some unofficial codes. You can also create your
+own custom response status (see Instructions).</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Status Code</th>
+<th>Status Text</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://response.page/status/200">200</a></td>
+<td>OK</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/201">201</a></td>
+<td>Created</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/202">202</a></td>
+<td>Accepted</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/203">203</a></td>
+<td>Non-Authoritative Information</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/204">204</a></td>
+<td>No Content</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/205">205</a></td>
+<td>Reset Content</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/206">206</a></td>
+<td>Partial Content</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/207">207</a></td>
+<td>Multi-Status</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/208">208</a></td>
+<td>Already Reported</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/226">226</a></td>
+<td>IM Used</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/301">301</a></td>
+<td>Moved Permanently</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/302">302</a></td>
+<td>Found</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/303">303</a></td>
+<td>See Other</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/304">304</a></td>
+<td>Not Modified</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/305">305</a></td>
+<td>Use Proxy Deprecated</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/306">306</a></td>
+<td>unused</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/307">307</a></td>
+<td>Temporary Redirect</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/308">308</a></td>
+<td>Permanent Redirect</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/400">400</a></td>
+<td>Bad Request</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/401">401</a></td>
+<td>Unauthorized</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/402">402</a></td>
+<td>Payment Required Experimental</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/403">403</a></td>
+<td>Forbidden</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/404">404</a></td>
+<td>Not Found</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/405">405</a></td>
+<td>Method Not Allowed</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/406">406</a></td>
+<td>Not Acceptable</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/407">407</a></td>
+<td>Proxy Authentication Required</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/408">408</a></td>
+<td>Request Timeout</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/409">409</a></td>
+<td>Conflict</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/410">410</a></td>
+<td>Gone</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/411">411</a></td>
+<td>Length Required</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/412">412</a></td>
+<td>Precondition Failed</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/413">413</a></td>
+<td>Payload Too Large</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/414">414</a></td>
+<td>URI Too Long</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/415">415</a></td>
+<td>Unsupported Media Type</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/416">416</a></td>
+<td>Range Not Satisfiable</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/417">417</a></td>
+<td>Expectation Failed</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/418">418</a></td>
+<td>I’m a teapot</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/419">419</a></td>
+<td>Page Expired</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/420">420</a></td>
+<td>Enhance Your Calm</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/421">421</a></td>
+<td>Misdirected Request</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/422">422</a></td>
+<td>Unprocessable Entity</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/423">423</a></td>
+<td>Locked</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/424">424</a></td>
+<td>Failed Dependency</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/425">425</a></td>
+<td>Too Early Experimental</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/426">426</a></td>
+<td>Upgrade Required</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/428">428</a></td>
+<td>Precondition Required</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/429">429</a></td>
+<td>Too Many Requests</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/430">430</a></td>
+<td>Request Header Fields Too Large</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/431">431</a></td>
+<td>Request Header Fields Too Large</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/440">440</a></td>
+<td>Login Time-out</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/444">444</a></td>
+<td>No Response</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/450">450</a></td>
+<td>Blocked by Windows Parental Controls</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/451">451</a></td>
+<td>Unavailable For Legal Reasons</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/460">460</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/463">463</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/494">494</a></td>
+<td>Request header too large</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/495">495</a></td>
+<td>SSL Certificate Error</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/496">496</a></td>
+<td>SSL Certificate Required</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/497">497</a></td>
+<td>HTTP Request Sent to HTTPS Port</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/498">498</a></td>
+<td>Invalid Token</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/499">499</a></td>
+<td>Client Closed Request</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/500">500</a></td>
+<td>Internal Server Error</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/501">501</a></td>
+<td>Not Implemented</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/502">502</a></td>
+<td>Bad Gateway</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/503">503</a></td>
+<td>Service Unavailable</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/504">504</a></td>
+<td>Gateway Timeout</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/505">505</a></td>
+<td>HTTP Version Not Supported</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/506">506</a></td>
+<td>Variant Also Negotiates</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/507">507</a></td>
+<td>Insufficient Storage</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/508">508</a></td>
+<td>Loop Detected</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/509">509</a></td>
+<td>Bandwidth Limit Exceeded</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/510">510</a></td>
+<td>Not Extended</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/511">511</a></td>
+<td>Network Authentication Required</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/520">520</a></td>
+<td>Web Server Returned an Unknown Error</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/521">521</a></td>
+<td>Web Server Is Down</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/522">522</a></td>
+<td>Connection Timed Out</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/523">523</a></td>
+<td>Origin Is Unreachable</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/524">524</a></td>
+<td>A Timeout Occurred</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/525">525</a></td>
+<td>SSL Handshake Failed</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/526">526</a></td>
+<td>Invalid SSL Certificate</td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/527">527</a></td>
+<td>Railgun Error</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/530">530</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="https://response.page/status/598">598</a></td>
+<td>Network read timeout error</td>
+</tr>
+<tr class="even">
+<td><a href="https://response.page/status/599">599</a></td>
+<td>Network Connect Timeout Error</td>
+</tr>
+</tbody>
+</table>
+<h1 id="faqs">FAQs</h1>
+<h3 id="why-dont-you-support-1xx-http-status-codes"><strong>Why don’t
+you support 1xx HTTP status codes?</strong></h3>
+<p>Unfortunately the Fetch API the workers runtime uses doesn’t support
+returning 1xx responses and only supports returning a response within <a
+href="https://fetch.spec.whatwg.org/#initialize-a-response">200 and
+599</a></p>
+<h3
+id="i-cant-get-a-response-body-for-204-205-or-304-status-codes"><strong>I
+can’t get a response body for 204, 205 or 304 status codes</strong></h3>
+<p>The Fetch API the workers runtime doesn’t support having a response
+body for the <a href="https://fetch.spec.whatwg.org/#statuses">204, 205
+and 304</a> status codes</p>
+<h3 id="why-build-this"><strong>Why build this?</strong></h3>
+<p>When writing other Cloudflare workers, I wanted a way to easily check
+how my code would handle downstream errors, and it was a fun project to
+open source</p>
+<h3 id="do-you-log-anything"><strong>Do you log anything?</strong></h3>
+<p>I keep no logs. Cloudflare does have the ability to live tail logs
+which may be used in the event of debugging. This contains some basic
+information about the event (see <a
+href="https://developers.cloudflare.com/logs/reference/log-fields/account/workers_trace_events/">here</a>)</p>
+<h3
+id="ive-found-a-bug-would-like-to-request-a-feature-or-contribute"><strong>I’ve
+found a bug, would like to request a feature or contribute</strong></h3>
+<p>Sure! Thank you for you interest. Please create an issue or PR in the
+Github Repo. Please bare in mind this is a hobby project so I will get
+back to you as soon as possible.</p>
+<h1 id="fair-use">Fair Use</h1>
+<p>For now, this is running on the free workers plan which allows 100k
+requests a day. There is no rate limiting however if the usage gets high
+I may implement rate limiting.</p>
+<h1 id="similar-projects">Similar projects</h1>
+<p>Both https://httpstat.us and https://httpbin.org allow the ability to
+receive http response status codes and I’d like to thank them both for
+inspiration.</p>
+
+\end{document}

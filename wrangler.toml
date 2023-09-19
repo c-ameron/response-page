@@ -7,3 +7,6 @@ workers_dev = false
 routes = [
 	{ pattern = "response.page", custom_domain = true, zone_name = "response.page" }
 ]
+
+[site]
+bucket = "./docs"

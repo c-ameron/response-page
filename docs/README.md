@@ -1,5 +1,3 @@
-# response.page
-
 [response.page](https://response.page) is an easy to use service that returns HTTP response status codes, running on Cloudflare workers.
 
 - You can request any HTTP status codes between 200-599 (see response codes)
