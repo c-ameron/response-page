@@ -8,6 +8,8 @@
 - Sleep delay
 - Responds to `GET`, `HEAD`, `POST`, `PUT`, `PATCH`, `DELETE` and `OPTIONS` methods
 
+You can check out the code at [https://github.com/c-ameron/response-page](https://github.com/c-ameron/response-page/)
+
 # How to use
 
 Request to `https://response.page/status/<status>` and get the HTTP status as a response.
@@ -203,7 +205,7 @@ I keep no logs. Cloudflare does have the ability to live tail logs which may be 
 
 ### I've found a bug, would like to request a feature or contribute
 
-Sure! Thank you for you interest. Please create an issue or PR in the Github Repo. Please bare in mind this is a hobby project so I will get back to you as soon as possible.
+Sure! Thank you for you interest. Please create an issue or PR in the [Github Repo](https://github.com/c-ameron/response-page). Please bare in mind this is a hobby project so I will get back to you as soon as possible.
 
 # Fair Use
 

@@ -26,8 +26,8 @@
     "start": "npx wrangler dev",
     "deploy": "npx wrangler deploy",
     "build": "npx wrangler deploy --dry-run --outdir=dist",
-    "test": "npm run build && NODE_OPTIONS=--experimental-vm-modules npx ava --verbose test/*.spec.ts --timeout=20s",
-    "ava": "NODE_OPTIONS=--experimental-vm-modules npx ava test/*.spec.ts --timeout=20s",
+    "test": "npm run build && NODE_OPTIONS=\"--experimental-vm-modules --loader=ts-node/esm --trace-warnings\" npx ava --verbose test/*.spec.ts --timeout=20s",
+    "ava": "NODE_OPTIONS=\"--experimental-vm-modules --loader=ts-node/esm --trace-warnings\" npx ava test/*.spec.ts --timeout=20s",
     "lint": "npx eslint .",
     "prettier": "npx prettier --write .",
     "prettier-check": "npx prettier --check ."

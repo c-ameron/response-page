@@ -1,6 +1,6 @@
 name = "response-page"
 main = "src/index.ts"
-compatibility_date = "2022-11-12"
+compatibility_date = "2023-11-08"
 
 [env.production]
 workers_dev = false

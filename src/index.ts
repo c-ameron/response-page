@@ -26,7 +26,12 @@ export default {
           },
           { mapRequestToAsset: serveSinglePageApp,
             ASSET_NAMESPACE: env.__STATIC_CONTENT,
-						ASSET_MANIFEST: assetManifest, }
+						ASSET_MANIFEST: assetManifest,
+            cacheControl: {
+              browserTTL: 604800,
+              edgeTTL: 604800,
+            }
+          }
         );
       } catch (e) {
         let pathname = new URL(request.url).pathname;

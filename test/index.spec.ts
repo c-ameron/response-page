@@ -4,8 +4,7 @@ import { NULL_BODY_STATUS_CODES, STATUS_CODES } from "../src/lib/codes.js";
 
 const MINIFLARE_HOST = "http://localhost:8787";
 
-const INDEX_REGEX =
-  /<!DOCTYPE html><html><head><meta charset="utf-8"><title>response.page.md<\/title><style>/;
+const INDEX_REGEX = /name: 'response.page'/s;
 
 test.beforeEach((t) => {
   // Create a new Miniflare environment for each test
@@ -259,7 +258,7 @@ test(`Request to random path will return index`, async (t) => {
   t.regex(await res.text(), INDEX_REGEX);
 });
 
-test(`Request to /status will return index`, async (t) => {
+test(`Request to /status will return docsify`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
@@ -269,7 +268,7 @@ test(`Request to /status will return index`, async (t) => {
   t.regex(await res.text(), INDEX_REGEX);
 });
 
-test(`Request to 1xx will return index`, async (t) => {
+test(`Request to 1xx will return docsify`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
@@ -279,7 +278,7 @@ test(`Request to 1xx will return index`, async (t) => {
   t.regex(await res.text(), INDEX_REGEX);
 });
 
-test(`Request to 6xx will return index`, async (t) => {
+test(`Request to 6xx will return docsify`, async (t) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { mf } = t.context;
