@@ -29,7 +29,7 @@ By default, it will use the official (and some unofficial) status codes and text
 
 ```bash
 $ curl -G --data-urlencode "statustext=custom status text!" https://response.page/status/200
-200: custom status text!
+custom status text!
 ```
 
 ## Custom Response Code
@@ -37,7 +37,7 @@ $ curl -G --data-urlencode "statustext=custom status text!" https://response.pag
 You can request any status code between 200 - 599. Simply change the path in `/status/<number>`. By default you will get an empty status text, so feel free to combine it with the custom `statustext` option as well.
 
 ```bash
-$ curl -G --data-urlencode "statustext=custom error" https://response.page/status/543
+$ curl -G --data-urlencode "statustext=543: custom error" https://response.page/status/543
 543: custom error
 ```
 

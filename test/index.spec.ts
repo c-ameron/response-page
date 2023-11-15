@@ -55,7 +55,7 @@ test(`return 200 with custom statustext for html`, async (t) => {
   const res = await mf.dispatchFetch(url);
   t.is(await res.status, 200);
   t.is(await res.statusText, "look at me!");
-  t.is(await res.text(), "200: look at me!");
+  t.is(await res.text(), "look at me!");
   t.is(res.headers.get("Content-Type"), "text/plain");
 });
 
@@ -80,7 +80,7 @@ test(`return custom status and status text for html`, async (t) => {
   const res = await mf.dispatchFetch(url);
   t.is(await res.status, 444);
   t.is(await res.statusText, "a custom text");
-  t.is(await res.text(), "444: a custom text");
+  t.is(await res.text(), "a custom text");
   t.is(res.headers.get("Content-Type"), "text/plain");
 });
 

@@ -2,6 +2,7 @@ import { STATUS_CODES, NULL_BODY_STATUS_CODES } from "./codes";
 export class StatusCode {
   statusCode: number;
   statusText: string;
+  hasCustomStatusText: boolean;
   format: string;
   sleepDelay: number;
   headers: Headers;
@@ -9,6 +10,7 @@ export class StatusCode {
   constructor(request: Request) {
     const url = new URL(request.url);
     this.statusCode = this.#parseStatusCode(url.pathname);
+    this.hasCustomStatusText = url.searchParams.has("statustext");
     this.statusText = this.#parseStatusText(url);
     this.format = this.#getFormatParam(request);
     this.sleepDelay = this.#getSleepParam(url);
@@ -51,7 +53,11 @@ export class StatusCode {
   }
 
   #getHtml() {
-    return `${this.statusCode}: ${this.statusText}`;
+    if (this.hasCustomStatusText) {
+      return `${this.statusText}`;
+    } else {
+      return `${this.statusCode}: ${this.statusText}`;
+    }
   }
 
   #parseStatusCode(path: string): number {
