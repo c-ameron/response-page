@@ -1,30 +1,52 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `wrangler dev src/index.ts` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `wrangler publish src/index.ts --name my-worker` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { StatusCode } from "./lib/statusCode";
+import { INDEX_HTML } from "./lib/html";
+import { getAssetFromKV, serveSinglePageApp } from '@cloudflare/kv-asset-handler';
+import manifestJSON from '__STATIC_CONTENT_MANIFEST';
+const assetManifest = JSON.parse(manifestJSON);
 
-export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Env {}
 
 export default {
-	async fetch(
-		request: Request,
-		env: Env,
-		ctx: ExecutionContext
-	): Promise<Response> {
-		return new Response("Hello World!");
-	},
+  async fetch(
+    request: Request,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    env: Env,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ctx: ExecutionContext
+  ): Promise<Response> {
+    const url = new URL(request.url);
+    if (!isValidStatusPath(url.pathname)) {
+      // serve docsify app
+      try {
+        return await getAssetFromKV(
+          {
+            request,
+            waitUntil: ctx.waitUntil.bind(ctx),
+          },
+          { mapRequestToAsset: serveSinglePageApp,
+            ASSET_NAMESPACE: env.__STATIC_CONTENT,
+						ASSET_MANIFEST: assetManifest,
+            cacheControl: {
+              browserTTL: 604800,
+              edgeTTL: 604800,
+            }
+          }
+        );
+      } catch (e) {
+        let pathname = new URL(request.url).pathname;
+        return new Response(`"${pathname}" not found`, {
+          status: 404,
+          statusText: 'not found',
+        });
+      }
+    }
+    const statusCode = new StatusCode(request);
+    await statusCode.sleep();
+    return statusCode.response();
+  },
 };
+
+function isValidStatusPath(status: string) {
+  return /^\/status\/([2-5][0-9][0-9])$/.test(status);
+}

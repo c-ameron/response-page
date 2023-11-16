@@ -1,9 +1,43 @@
 {
+  "name": "response-page",
+  "author": "c-ameron",
+  "homepage": "https://github.com/c-ameron/response-page",
+  "version": "0.1.0",
+  "type": "module",
   "dependencies": {
-    "wrangler": "^2.2.1"
+    "wrangler": "~>3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^3.18.0",
-    "typescript": "^4.8.4"
+    "@ava/typescript": "^4.1.0",
+    "@cloudflare/kv-asset-handler": "^0.3.0",
+    "@cloudflare/workers-types": "~>4",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "ava": "^5.3.1",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "3.0.3",
+    "ts-node": "^10.9.1",
+    "miniflare": "~>2",
+    "typescript": "^5.2.2"
+  },
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "start": "npx wrangler dev",
+    "deploy": "npx wrangler deploy",
+    "build": "npx wrangler deploy --dry-run --outdir=dist",
+    "test": "npm run build && NODE_OPTIONS=\"--experimental-vm-modules --loader=ts-node/esm --trace-warnings\" npx ava --verbose test/*.spec.ts --timeout=20s",
+    "ava": "NODE_OPTIONS=\"--experimental-vm-modules --loader=ts-node/esm --trace-warnings\" npx ava test/*.spec.ts --timeout=20s",
+    "lint": "npx eslint .",
+    "prettier": "npx prettier --write .",
+    "prettier-check": "npx prettier --check ."
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm"
+    ]
   }
 }
