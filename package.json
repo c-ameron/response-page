@@ -18,7 +18,7 @@
     "eslint-config-prettier": "^9.0.0",
     "prettier": "3.0.3",
     "ts-node": "^10.9.1",
-    "miniflare": "~>2",
+    "miniflare": "~>3",
     "typescript": "^5.2.2"
   },
   "license": "GPL-3.0-or-later",
